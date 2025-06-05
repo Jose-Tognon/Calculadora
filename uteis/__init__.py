@@ -1,38 +1,44 @@
 import tkinter as tk
-n_antigo = operacao = porcentual = 0
+n_antigo = operacao = percentual = count = 0
 
 def add(n,tela):
+    global count
+    if count != 0:
+        tela.delete(0, tk.END)
+        count = 0
     current = tela.get()
-    tela.delete(0,tk.END)
-    tela.insert(0,str(current) + str(n))
+    if n =='.' and n in current:
+        pass
+    else:
+        tela.delete(0,tk.END)
+        tela.insert(0,str(current) + str(n))
 
 def delete(tela):
     tela.delete(0,tk.END)
 
 def back(tela):
-    current = tela.get().strip()
-    new_current = ''
-    for i in range(0,len(current)):
-        if i >= (len(current) - 1):
-            pass
-        else:
-            new_current = str(new_current) + str(current[i])
-    current = new_current
-    tela.delete(0,tk.END)
-    tela.insert(0,str(current))
+    global count
+    if count == 0:
+        current = tela.get().strip()
+        current = current[:-1]
+        tela.delete(0,tk.END)
+        tela.insert(0,str(current))
+    else:
+        pass
 
 def porcentagem(tela):
     global n_antigo
-    global porcentual
+    global percentual
     current = tela.get()
     try:
         current = int(current) * int(n_antigo)/100
-        porcentual = current
+        percentual = current
         print(current)
     except:
         current = float(current) * float(n_antigo)/100
-        porcentual = current
+        percentual = current
         print(current)
+
 
 def somar(tela):
     global operacao
@@ -65,37 +71,49 @@ def dividir(tela):
 def igual(tela):
     global operacao
     global n_antigo
-    global porcentual
-    if porcentual == 0:
+    global percentual
+    global count
+    if percentual == 0:
         n_atual = tela.get()
     else:
-        n_atual = porcentual
+        n_atual = percentual
     if operacao == 'adicao':
         try:
             soma = float(n_antigo) + float(n_atual)
+            if int(soma) == float(soma):
+                soma = int(soma)
             tela.delete(0,tk.END)
             tela.insert(0,str(soma))
         except:
             tela.insert('ERRO!')
     elif operacao == 'subtracao':
         try:
-            subtracao = float(n_antigo) - float(n_atual)
+            sub = float(n_antigo) - float(n_atual)
+            if int(sub) == float(sub):
+                sub = int(sub)
             tela.delete(0,tk.END)
-            tela.insert(0,str(subtracao))
+            tela.insert(0,str(sub))
         except:
             tela.insert('ERRO!')
     elif operacao == 'multiplicacao':
         try:
             mult = float(n_antigo) * float(n_atual)
+            if int(mult) == float(mult):
+                mult = int(mult)
             tela.delete(0,tk.END)
             tela.insert(0,str(mult))
         except:
             tela.insert('ERRO!')
     elif operacao == 'divisao':
         try:
-            mult = float(n_antigo) / float(n_atual)
+            div = float(n_antigo) / float(n_atual)
+            if int(div) == float(div):
+                div = int(div)
             tela.delete(0,tk.END)
-            tela.insert(0,str(mult))
+            tela.insert(0,str(div))
         except:
             tela.insert('ERRO!')
-    porcentual = 0
+    else:
+        pass
+    percentual = 0
+    count += 1
